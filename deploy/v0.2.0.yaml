@@ -216,7 +216,7 @@ spec:
       serviceAccountName: cpanel-webhook
       containers:
         - name: cpanel-webhook
-          image: "jamesorlakin/cert-manager-cpanel-dns-webhook:v0.2.0"
+          image: "argalep/cert-manager-cpanel-dns-webhook:latest"
           imagePullPolicy: IfNotPresent
           args:
             - --tls-cert-file=/tls/tls.crt
