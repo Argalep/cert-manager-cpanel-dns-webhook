@@ -15,9 +15,9 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 
-	"github.com/argalep/cert-manager-cpanel-dns-webhook/cpanel"
-	"github.com/cert-manager/cert-manager/pkg/acme/webhook/apis/acme/v1alpha1"
-	"github.com/cert-manager/cert-manager/pkg/acme/webhook/cmd"
+	"github.com/jamesorlakin/cert-manager-cpanel-dns-webhook/cpanel"
+	"github.com/jetstack/cert-manager/pkg/acme/webhook/apis/acme/v1alpha1"
+	"github.com/jetstack/cert-manager/pkg/acme/webhook/cmd"
 	log "github.com/sirupsen/logrus"
 )
 
