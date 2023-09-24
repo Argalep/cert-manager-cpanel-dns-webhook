@@ -24,7 +24,7 @@ metadata:
     heritage: Helm
 rules:
   - apiGroups:
-      - jameslakin.co.uk
+      - quingis.com
     resources:
       - '*'
     verbs:
@@ -223,7 +223,7 @@ spec:
             - --tls-private-key-file=/tls/tls.key
           env:
             - name: GROUP_NAME
-              value: "jameslakin.co.uk"
+              value: "quingis.com"
           ports:
             - name: https
               containerPort: 443
@@ -253,7 +253,7 @@ spec:
 apiVersion: apiregistration.k8s.io/v1
 kind: APIService
 metadata:
-  name: v1alpha1.jameslakin.co.uk
+  name: v1alpha1.quingis.com
   labels:
     app: cpanel-webhook
     chart: cpanel-webhook-0.2.0
@@ -262,7 +262,7 @@ metadata:
   annotations:
     cert-manager.io/inject-ca-from: "cert-manager/cpanel-webhook-webhook-tls"
 spec:
-  group: jameslakin.co.uk
+  group: quingis.com
   groupPriorityMinimum: 1000
   versionPriority: 15
   service:
