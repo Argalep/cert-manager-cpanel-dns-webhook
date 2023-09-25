@@ -6,21 +6,28 @@
 # solve the DNS01 challenge.
 # This group name should be **unique**, hence using your own company's domain
 # here is recommended.
-groupName: jameslakin.co.uk
+groupName: acme.quingis.com
 
 certManager:
   namespace: cert-manager
   serviceAccountName: cert-manager
 
 image:
-  repository: jamesorlakin/cert-manager-cpanel-dns-webhook
-  tag: v0.2.0
+  repository: argalep/cert-manager-cpanel-dns-webhook
+  # tag: latest
   pullPolicy: IfNotPresent
-
-replicaCount: 1
 
 nameOverride: ""
 fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
 
 service:
   type: ClusterIP
@@ -43,3 +50,13 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+containerSecurityContext:
+  runAsUser: 100
+  runAsGroup: 100
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+priorityClassName: ""

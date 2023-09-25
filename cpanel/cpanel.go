@@ -4,7 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -122,7 +122,7 @@ func (c *CpanelClient) getZoneDetails() (*cpanelZoneResponse, error) {
 	}
 	defer resp.Body.Close()
 
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Error("zone info HTTP response read error", err)
 		return nil, err
@@ -190,7 +190,7 @@ func (c *CpanelClient) createZoneRecord(serial string, recordName string, value 
 	}
 	defer resp.Body.Close()
 
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Error("zone create HTTP response read error", err)
 		return err
@@ -230,7 +230,7 @@ func (c *CpanelClient) deleteZoneRecord(serial string, recordLineNo int) error {
 	}
 	defer resp.Body.Close()
 
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Error("zone delete HTTP response read error", err)
 		return err
