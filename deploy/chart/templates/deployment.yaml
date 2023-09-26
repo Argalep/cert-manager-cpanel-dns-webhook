@@ -1,50 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "cert-manager-webhook-pdns.fullname" . }}
+  name: {{ include "cpanel-webhook.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
   labels:
-    {{- include "cert-manager-webhook-pdns.labels" . | nindent 4 }}
+    app: {{ include "cpanel-webhook.name" . }}
+    chart: {{ include "cpanel-webhook.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "cert-manager-webhook-pdns.selectorLabels" . | nindent 6 }}
+      app: {{ include "cpanel-webhook.name" . }}
+      release: {{ .Release.Name }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-        {{- include "cert-manager-webhook-pdns.labels" . | nindent 8 }}
+        app: {{ include "cpanel-webhook.name" . }}
+        release: {{ .Release.Name }}
     spec:
-      serviceAccountName: {{ include "cert-manager-webhook-pdns.serviceAccountName" . }}
-      {{- with .Values.podSecurityContext }}
-      securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.priorityClassName }}
-      priorityClassName: {{ . | quote }}
-      {{- end }}
+      serviceAccountName: {{ include "cpanel-webhook.fullname" . }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - --tls-cert-file=/tls/tls.crt
             - --tls-private-key-file=/tls/tls.key
-            - --secure-port=8443
           env:
             - name: GROUP_NAME
               value: {{ .Values.groupName | quote }}
           ports:
             - name: https
-              containerPort: 8443
+              containerPort: 443
               protocol: TCP
-          {{- with .Values.containerSecurityContext }}
-          securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
           livenessProbe:
             httpGet:
               scheme: HTTPS
@@ -64,7 +54,7 @@ spec:
       volumes:
         - name: certs
           secret:
-            secretName: {{ include "cert-manager-webhook-pdns.servingCertificate" . }}
+            secretName: {{ include "cpanel-webhook.servingCertificate" . }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
